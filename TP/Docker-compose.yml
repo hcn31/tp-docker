@@ -1,0 +1,25 @@
+version: '3'
+services:
+  serveur1:
+    container_name: serveur1
+    restart: always
+    build: ./METEOBACK
+    ports:
+      - "5000:5000"
+    external_links:
+      - mongo1
+  mongo1:
+    container_name: mongo1
+    image: mongo
+    ports:
+      - '27017:27017'
+# client
+  client1:
+    build: ./METEO
+    ports:
+      - "4000:4000"
+    depends_on:
+      - serveur1
+    network_mode: bridge
+volumes:
+  mongo1: {}
